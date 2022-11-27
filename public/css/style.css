@@ -7,6 +7,14 @@
   box-sizing: border-box;
 }
 
+ol, ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
 html {
   min-width: 45em;
   scroll-behavior: smooth;
@@ -32,9 +40,14 @@ html body {
 }
 html body:has(.no-scroll) {
   overflow-y: hidden;
+  overflow-x: hidden;
 }
 html body main {
   --gap: 2em;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: var(--primary-1);
   padding: 1em;
 }
@@ -44,7 +57,7 @@ html body main .score-board {
   border-bottom: solid 0.5em #000;
 }
 html body main .score-board h1 {
-  font-size: 50px;
+  font-size: 48px;
 }
 html body main .frame {
   display: flex;

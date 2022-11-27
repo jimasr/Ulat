@@ -1,3 +1,4 @@
+<?php require_once '../src/init.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,18 +6,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= TITLE ?></title>
+    <link rel="stylesheet" href="<?= PATH_CSS . 'style.css'?>">
+    <link rel="stylesheet" href="<?= PATH_CSS . 'components/popup.css'?>">
 
-    <link rel="stylesheet" href="public/css/style.css">
-    <script src="public/js/game.js" defer></script>
+    <script type="module" src="<?= PATH_JS . 'main.js' ?>" defer></script>
+    <script type="module" src="<?= PATH_JS . 'components/popup.js' ?>" defer></script>
+
 </head>
 <body>
-    <main>
+    <main class="no-scroll">
         <div class="score-board">
-            <h1 id="score">0</h1>
+            <h1 id="score">0000</h1>
         </div>
-        <canvas class="frame" width="500" height="500">
-            <div id="hide" class="grid"></div>
-        </canvas>
+        <?php require_once(PATH_COMPONENTS . 'popup.php'); ?>
+        <?php require_once(PATH_COMPONENTS . 'canvas.php'); ?>
     </main>
 </body>
 </html>

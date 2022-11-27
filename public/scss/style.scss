@@ -6,6 +6,15 @@
 	font-family: inherit;
 	box-sizing: border-box;
 }
+
+ol, ul {
+	list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
 html {
 	min-width: 45em;
 	scroll-behavior: smooth;
@@ -38,10 +47,18 @@ html {
 
 		&:has(.no-scroll) {
 			overflow-y: hidden;
+            overflow-x: hidden;
 		}
+
+
 
 		main {
             --gap : 2em;
+
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
 
             background-color: var(--primary-1);
             padding: 1em;
@@ -53,7 +70,7 @@ html {
                 border-bottom: solid .5em #000;
 
                 h1{
-                    font-size: 50px;
+                    font-size: 48px;
                 }
 
             }
@@ -65,8 +82,6 @@ html {
                 border: solid .5em #000;
 
             }
-    
-        
                 
         }
 

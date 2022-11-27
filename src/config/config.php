@@ -10,10 +10,8 @@ const PATH_PUBLIC = './';
 const PATH_SRC = '../src/';
 const PATH_CONFIG = PATH_SRC . 'config/';
 const PATH_CONTROLLERS = PATH_SRC . 'controllers/';
+const PATH_COMPONENTS= PATH_SRC . 'components/';
 const PATH_MODELS = PATH_SRC . 'models/';
 const PATH_ENTITIES = PATH_SRC . 'entities/';
 const PATH_VIEWS = PATH_SRC . 'views/';
 const PATH_LANGUAGES = PATH_SRC . 'lang/';
-
-const LANGUAGES = ['fr', 'en'];
-const DEFAULT_LANGUAGE = 'fr';
