@@ -1,6 +1,8 @@
 import { Snake } from './modules/Snake.js';
 import { Food } from './modules/Food.js';
 import { Canvas } from './modules/Canvas.js';
+import { Image } from './modules/Image.js';
+import { activate } from './components/popup.js'
 
 //enum game state
 const INIT = 1;
@@ -9,7 +11,6 @@ const PAUSED = 3;
 const GAME_OVER = 4;
 
 const cellSize = 20;
-
 const UP = [0, -1];
 const RIGHT = [1, 0];
 const DOWN = [0, 1];
@@ -23,12 +24,12 @@ var rows;
 let cols;
 let direction;
 let gameState;
-let speed = 5;
+let speed;
 
 let food;
 let snake;
 let canvas;
-let score = 0;
+let score;
 let allowTurn = true;
 
 const canvasFrame = document.querySelector('canvas.frame');
@@ -38,6 +39,7 @@ const snakeHead = document.querySelector('img.snake-head');
 const snakeBody = document.querySelector('img.snake-body');
 const snakeTail = document.querySelector('img.snake-tail');
 const foodImage = document.querySelector('img.food');
+
 
 document.body.addEventListener('keydown', keyPressed);
 let dataPromise = getData();
@@ -60,7 +62,7 @@ function getData() {
         canvas.setColor(c_primary);
         canvas.setCellSize(cellSize);
 
-        snake = new Snake(data.snake, [snakeHead, snakeBody, snakeTail]);
+        snake = new Snake(data.snake, [new Image(snakeHead, 0), new Image(snakeBody, 0), new Image(snakeTail, 0)]);
 
         food = new Food(generateRandomCoordinate(), foodImage);
 
@@ -80,30 +82,42 @@ function initGameState() {
     gameState = INIT;
     direction = RIGHT;
 
+    score = 0;
+    speed = 5;
+
 }
 
 function playGame() {
     if(gameState == PLAYING) {
         snake.move(direction);
-
         checkFoodEaten();
         checkColision();
-
         canvas.draw(food, snake);
     }
     allowTurn = true
 
-    if(gameState == GAME_OVER) {
-        canvas.gameOver();
-        console.log("Game over");
+    if(gameState == PAUSED) {
+
     }
 
-    setTimeout(playGame, 1000/speed);
-
+    if(gameState == GAME_OVER) {
+        if(isNewHighscore()){
+            canvas.newHighscore();
+        } else {
+            canvas.gameOver();
+        }
+        console.log("Game over");
+        setTimeout(() => {
+            activate();
+            getData();  
+            scoreboard.textContent = "0000";
+        }, 2000);
+    } else { 
+        setTimeout(playGame, 1000/speed);
+    }
 }
 
 function checkFoodEaten() {
-
     if(snake.head[0] == food.x && snake.head[1] == food.y){
         food = new Food(generateRandomCoordinate(), foodImage);
         snake.growSnake(direction);
@@ -135,16 +149,16 @@ function checkColision() {
 
 }
 
-function addSpeed(){
+function addSpeed() {
     speed += 0.3;
 }
 
-function addScore(){
+function addScore() {
     score++;
     scoreboard.textContent = ("0000" + score).slice(-4);
 }
 
-function keyPressed(event){
+function keyPressed(event) {
     if(allowTurn){
         switch(event.code){
             case "ArrowRight":
@@ -180,11 +194,8 @@ function keyPressed(event){
                 }
                 break;
         }
-    
         allowTurn = false;
     }
-
-
 }
 
 // UTILITIES ////////////////////////////////
@@ -194,4 +205,20 @@ function generateRandomCoordinate(){
     let y = Math.floor(Math.random() * cols);
 
     return [x,y];
+}
+
+function isNewHighscore(){
+    const storage = window.localStorage;
+    let highest = storage.getItem("score");
+
+    if(highest == undefined){
+        highest = 0;
+    }
+
+    if(highest < score){
+        storage.setItem("score", score);
+        return true;
+    }
+
+    return false;
 }
