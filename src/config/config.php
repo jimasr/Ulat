@@ -4,7 +4,8 @@ const ROOT= '/';
 
 const PATH_JS = ROOT . 'js/';
 const PATH_CSS = ROOT . 'css/';
-const PATH_IMAGES = ROOT . 'images/';
+const PATH_IMAGES = ROOT . 'img/';
+const PATH_ICONS = PATH_IMAGES . 'icons/';
 
 const PATH_PUBLIC = './';
 const PATH_SRC = '../src/';

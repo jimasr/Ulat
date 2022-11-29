@@ -1,21 +1,8 @@
 class Snake{
-    constructor(coordinates, images){
+    constructor(coordinates){
         this.head = coordinates[0];
         this.body = coordinates.slice(1, coordinates.length-1);
         this.tail = coordinates[coordinates.length-1];
-        this.images = images;
-    }
-
-    getHeadImage(){
-        return this.images[0];
-    }
-
-    getBodyImage(){
-        return this.images[1];
-    }
-
-    getTailImage(){
-        return this.images[2];
     }
 
     growSnake(direction){

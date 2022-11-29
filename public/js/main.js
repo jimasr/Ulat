@@ -1,7 +1,6 @@
 import { Snake } from './modules/Snake.js';
 import { Food } from './modules/Food.js';
 import { Canvas } from './modules/Canvas.js';
-import { Image } from './modules/Image.js';
 import { activate } from './components/popup.js'
 
 //enum game state
@@ -34,14 +33,17 @@ let allowTurn = true;
 
 const canvasFrame = document.querySelector('canvas.frame');
 const scoreboard = document.querySelector('#score');
+const mute = document.querySelector('.mute');
 
-const snakeHead = document.querySelector('img.snake-head');
-const snakeBody = document.querySelector('img.snake-body');
-const snakeTail = document.querySelector('img.snake-tail');
-const foodImage = document.querySelector('img.food');
+//AUDIO /////////////////////////
+const eatingAudio = new Audio('./audio/move.mp3');
+const gameOverAudio = new Audio('./audio/gameover.mp3');
+const highScoreAudio = new Audio('./audio/highscore.mp3');
 
 
 document.body.addEventListener('keydown', keyPressed);
+mute.addEventListener('click', toggleSound);
+
 let dataPromise = getData();
 
 function getData() {
@@ -62,9 +64,9 @@ function getData() {
         canvas.setColor(c_primary);
         canvas.setCellSize(cellSize);
 
-        snake = new Snake(data.snake, [new Image(snakeHead, 0), new Image(snakeBody, 0), new Image(snakeTail, 0)]);
+        snake = new Snake(data.snake);
 
-        food = new Food(generateRandomCoordinate(), foodImage);
+        food = new Food(generateRandomCoordinate());
 
         canvas.draw(food, snake);
         playGame();
@@ -75,6 +77,7 @@ function getData() {
     });
 
 }
+
 // SPECIFIC SETUP
 
 function initGameState() {
@@ -88,25 +91,29 @@ function initGameState() {
 }
 
 function playGame() {
+
     if(gameState == PLAYING) {
-        snake.move(direction);
-        checkFoodEaten();
-        checkColision();
+        if(checkColision()) {
+            gameState = GAME_OVER;
+        }
+        if(checkFoodEaten()) {
+            snake.growSnake(direction);
+        } else {
+            snake.move(direction);
+        }
         canvas.draw(food, snake);
     }
+
     allowTurn = true
-
-    if(gameState == PAUSED) {
-
-    }
 
     if(gameState == GAME_OVER) {
         if(isNewHighscore()){
+            highScoreAudio.play();
             canvas.newHighscore();
         } else {
+            gameOverAudio.play();
             canvas.gameOver();
         }
-        console.log("Game over");
         setTimeout(() => {
             activate();
             getData();  
@@ -118,34 +125,36 @@ function playGame() {
 }
 
 function checkFoodEaten() {
-    if(snake.head[0] == food.x && snake.head[1] == food.y){
-        food = new Food(generateRandomCoordinate(), foodImage);
-        snake.growSnake(direction);
+    if(snake.head[0] + direction[0] == food.x && snake.head[1] + direction[1] == food.y){
+        food = new Food(generateRandomCoordinate());
         addScore();
         addSpeed();
-    }
 
+        eatingAudio.play();
+
+        return true;
+    }
+    return false;
 }
 
 function checkColision() {
-
+    let collided = false;
     //check off-grid value
     if(snake.head[0] < 0 || snake.head[0] >= rows|| snake.head[1] < 0 || snake.head[1] >= cols) {
-        console.log("Out of bound"); 
-        gameState = GAME_OVER;
+        collided = true;
     }
     //check head with body or tails
     for(const s of snake.body){
         if(snake.head[0] == s[0] && snake.head[1] == s[1]) {
-            console.log("Stop eating yourself");
-            gameState = GAME_OVER;
+            collided = true;
         }
     }
 
     if(snake.head[0]==snake.tail[0] && snake.head[1] == snake.tail[1]) {
-        console.log('Dont bite the tail!');
-        gameState = GAME_OVER;
+        collided = true;
     }
+
+    return collided
 
 }
 
@@ -189,7 +198,7 @@ function keyPressed(event) {
             case "Space":
                 if(gameState == PAUSED || gameState == INIT){
                     gameState = PLAYING;
-                } else{
+                } else {
                     gameState = PAUSED;
                 }
                 break;
@@ -221,4 +230,21 @@ function isNewHighscore(){
     }
 
     return false;
+}
+
+function toggleSound(){
+    const paths = mute.querySelectorAll('path');
+    for(const path of paths){
+        path.classList.toggle('hide');
+    }
+
+    if(eatingAudio.muted && gameOverAudio.muted && highScoreAudio.muted) {
+        eatingAudio.muted = false;
+        gameOverAudio.muted = false;
+        highScoreAudio.muted = false;
+    } else {
+        eatingAudio.muted = true;
+        gameOverAudio.muted = true;
+        highScoreAudio.muted = true;
+    }
 }

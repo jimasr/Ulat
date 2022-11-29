@@ -1,13 +1,8 @@
 
 class Food{
-    constructor(coordinate, image){
+    constructor(coordinate){
         this.x = coordinate[0];
         this.y = coordinate[1];
-        this.image = image;
-    }
-
-    getImage(){
-        return this.image;
     }
 }
 

@@ -69,8 +69,19 @@ html {
                 background-color: var(--primary-1);
                 border-bottom: solid .5em #000;
 
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
                 h1{
                     font-size: 48px;
+                }
+
+                .mute{
+                    width: 48px;
+                    opacity: 1;
+                    &:hover {
+                        opacity: .6;
+                    }
                 }
 
             }
@@ -89,6 +100,6 @@ html {
 	}
 }
 
-#hide{
+#hide, .hide{
     display: none;
 }
