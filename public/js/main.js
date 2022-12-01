@@ -124,9 +124,9 @@ function playGame() {
             canvas.gameOver();
         }
         setTimeout(() => {
-            activate();
-            getData();  
             scoreboard.textContent = "0000";
+
+            activate();
         }, 2000);
     } else { 
         setTimeout(playGame, 1000/speed);

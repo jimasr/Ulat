@@ -78,8 +78,9 @@ class Canvas {
             image, 
             snake.head[0] * this.cellSize, 
             snake.head[1] * this.cellSize, 
-            this.getWidthImage(direction), 
-            this.getHeightImage(direction));
+            this.cellSize , 
+            this.cellSize
+        );
 
         let i = -1
         let j = i + 1;
@@ -109,8 +110,8 @@ class Canvas {
                 image,
                 snake.body[j][0] * this.cellSize, 
                 snake.body[j][1] * this.cellSize, 
-                this.getWidthImage(direction), 
-                this.getHeightImage(direction));
+                this.cellSize, 
+                this.cellSize);
 
             i++;
             j++;
@@ -124,8 +125,9 @@ class Canvas {
             image, 
             snake.tail[0] * this.cellSize, 
             snake.tail[1] * this.cellSize, 
-            this.getWidthImage(direction), 
-            this.getHeightImage(direction)); 
+            this.cellSize, 
+            this.cellSize
+        ); 
 
     }
     
@@ -135,8 +137,9 @@ class Canvas {
             imgFood, 
             food.x * this.cellSize, 
             food.y * this.cellSize, 
-            15, 
-            15); 
+            this.cellSize, 
+            this.cellSize
+        ); 
     }
     
     clearCanvas() {
@@ -232,26 +235,6 @@ class Canvas {
         }    
     }
     
-    
-    getWidthImage(direction) {
-        if(direction == "up" || direction == "down") {
-            return 10;
-        } else {
-            return this.cellSize;
-        }
-    }
-
-    getHeightImage(direction) {
-        if(direction == "up" || direction == "down") {
-            return this.cellSize;
-        } else {
-            return 10;
-        }
-    }
-
-    
-
-
 }
 
 export { Canvas }
