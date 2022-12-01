@@ -15,7 +15,7 @@ class Snake{
         this.body.push(this.head);
         this.head = [this.head[0] + direction[0], this.head[1] + direction[1]];
         this.tail = this.body.shift();
-    } 
+    }
 }
 
 export { Snake };

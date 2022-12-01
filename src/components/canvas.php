@@ -1,8 +1,4 @@
-<canvas class="frame" width="" height="">
+<canvas class="frame" width="500" height="500">
     <div id="hide" class="grid">
-        <img class="snake-body" src="img/body.PNG" alt="snake-body">
-        <img class="snake-head" src="img/head.PNG" alt="snake-head">
-        <img class="snake-tail" src="img/tail.PNG" alt="snake-tail">
-        <img class="food" src="img/food.png" alt="food">
     </div>
 </canvas>

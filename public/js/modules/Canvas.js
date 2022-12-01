@@ -1,13 +1,48 @@
-const snakeHead = new Image();
-const snakeBody = new Image();
-const snakeTail = new Image();
-const foodImage = new Image();
+/***************** PATH *******************/
 
 const path = 'img/';
-snakeHead.src = path + 'head.png';
-snakeBody.src = path + 'body.png';
-snakeTail.src = path + 'tail.png';
-foodImage.src = path + 'food.png';
+const pathHead = path + 'head/';
+const pathBody = path + 'body/';
+const pathTail = path + 'tail/';
+const pathFood = path + 'food/';
+const extension = '.png';
+
+/***************** IMG *******************/
+
+const bodyLeft = new Image()
+const bodyRight = new Image();
+const bodyUp = new Image();
+const bodyDown = new Image();
+
+const headLeft = new Image();
+const headRight = new Image();
+const headUp = new Image();
+const headDown = new Image();
+
+const tailLeft = new Image();
+const tailRight = new Image();
+const tailUp = new Image();
+const tailDown = new Image();
+
+const imgFood = new Image();
+
+bodyLeft.src = pathBody + 'body-left' + extension;
+bodyRight.src = pathBody + 'body-right' + extension;
+bodyUp.src = pathBody + 'body-up' + extension;
+bodyDown.src = pathBody + 'body-down' + extension;
+
+headLeft.src =  pathHead + 'head-left' + extension;
+headRight.src = pathHead + 'head-right' + extension;
+headUp.src = pathHead + 'head-up' + extension;
+headDown.src = pathHead + 'head-down' + extension;
+
+tailLeft.src = pathTail + 'tail-left' + extension;
+tailRight.src = pathTail + 'tail-right' + extension;
+tailUp.src = pathTail + 'tail-up' + extension;
+tailDown.src = pathTail + 'tail-down' + extension;
+
+imgFood.src = pathFood + 'food' + extension;
+
 
 class Canvas {
     constructor(canvas, cellSize) {
@@ -29,41 +64,75 @@ class Canvas {
         this.cellSize = size;
     }
 
-    draw(food, snake) {
+    draw(food, snake, direction) {
         this.clearCanvas();
         this.drawFood(food);
-        this.drawSnake(snake);    
+        this.drawSnake(snake , direction);    
     }
     
-    drawSnake(snake) {
+    drawSnake(snake, direct) {
+        let direction = this.translateDirection(direct[0], direct[1]);
+        let image = this.getHeadImage(direction);
+        //draw head
         this.ctx.drawImage(
-            snakeHead, 
+            image, 
             snake.head[0] * this.cellSize, 
             snake.head[1] * this.cellSize, 
-            this.cellSize, 
-            10);
+            this.getWidthImage(direction), 
+            this.getHeightImage(direction));
 
-        for(const s of snake.body) {
+        let i = -1
+        let j = i + 1;
+
+        while(j < snake.body.length) {
+            if(i<0) {
+                //draw first part of body
+                if(snake.body.length < 2) {
+                    direction = this.getDirection(snake.head, snake.body[j])
+                    image = this.getBodyImage(direction);
+                } else {
+                    //snake.body[1] is the second last body part
+                    direction = this.getDirection(snake.body[1], snake.body[j])
+                    image = this.getBodyImage(direction);
+                }
+
+
+                console.log(image);
+                console.log(direction);
+
+            } else {
+                direction = this.getDirection(snake.body[j], snake.body[i]);
+                image = this.getBodyImage(direction);
+            }
+
             this.ctx.drawImage(
-                snakeBody, 
-                s[0] * this.cellSize, 
-                s[1] * this.cellSize, 
-                this.cellSize, 
-                10);
+                image,
+                snake.body[j][0] * this.cellSize, 
+                snake.body[j][1] * this.cellSize, 
+                this.getWidthImage(direction), 
+                this.getHeightImage(direction));
+
+            i++;
+            j++;
         }
 
+        //draw tail
+        direction = this.getDirection(snake.body[0], snake.tail);
+        image = this.getTailImage(direction)
+
         this.ctx.drawImage(
-            snakeTail, 
+            image, 
             snake.tail[0] * this.cellSize, 
             snake.tail[1] * this.cellSize, 
-            this.cellSize, 
-            10); 
+            this.getWidthImage(direction), 
+            this.getHeightImage(direction)); 
 
     }
     
     drawFood(food) {
+
         this.ctx.drawImage(
-            foodImage, 
+            imgFood, 
             food.x * this.cellSize, 
             food.y * this.cellSize, 
             15, 
@@ -93,7 +162,96 @@ class Canvas {
         this.ctx.fillText("New", this.canvas.width/2, this.canvas.height/2 - 50);
         this.ctx.fillText("Highscore!", this.canvas.width/2, this.canvas.height/2 + 60);
     }
+
+    //reverse search of direction for snake parts
+    //c1 for before and c2 for after
+    getDirection(c1, c2) {
+        let x1 = c1[0];
+        let y1 = c1[1];
+
+        let x2 = c2[0];
+        let y2 = c2[1];
+
+        let deltaX = x1 - x2;
+        let deltaY = y1 - y2;
+
+        return this.translateDirection(deltaX, deltaY);
+    }
+
+    translateDirection(deltaX, deltaY) {
+        let direction;
+        if(deltaX == 1 && deltaY == 0) {
+            direction = "right";
+        } else if(deltaX == -1 && deltaY == 0) {
+            direction = "left"
+        } else if(deltaX == 0 && deltaY == 1) {
+            direction = "down";
+        } else {
+            direction = "up";
+        }
+        return direction;
+    }
+
+    getBodyImage(direction) {
+        switch(direction) {
+            case "up":
+                return bodyUp;
+            case "down":
+                return bodyDown;
+            case "left":
+                return bodyLeft;
+            case "right":
+                return bodyRight;
+        }       
+    }
+
+    getHeadImage(direction) {
+        switch(direction) {
+            case "up":
+                return headUp;
+            case "down":
+                return headDown;
+            case "left":
+                return headLeft;
+            case "right":
+                return headRight;
+        }    
+    }
+
+
+    getTailImage(direction) {
+        switch(direction) {
+            case "up":
+                return tailUp;
+            case "down":
+                return tailDown;
+            case "left":
+                return tailLeft;
+            case "right":
+                return tailRight;
+        }    
+    }
     
+    
+    getWidthImage(direction) {
+        if(direction == "up" || direction == "down") {
+            return 10;
+        } else {
+            return this.cellSize;
+        }
+    }
+
+    getHeightImage(direction) {
+        if(direction == "up" || direction == "down") {
+            return this.cellSize;
+        } else {
+            return 10;
+        }
+    }
+
+    
+
+
 }
 
 export { Canvas }

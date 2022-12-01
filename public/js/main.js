@@ -34,19 +34,28 @@ let allowTurn = true;
 const canvasFrame = document.querySelector('canvas.frame');
 const scoreboard = document.querySelector('#score');
 const mute = document.querySelector('.mute');
+const play = document.getElementById('play');
 
-//AUDIO /////////////////////////
+/************ AUDIO *************/
+
 const eatingAudio = new Audio('./audio/move.mp3');
 const gameOverAudio = new Audio('./audio/gameover.mp3');
 const highScoreAudio = new Audio('./audio/highscore.mp3');
 
 
-document.body.addEventListener('keydown', keyPressed);
-mute.addEventListener('click', toggleSound);
 
-let dataPromise = getData();
 
-function getData() {
+play.addEventListener('click', ()=> {
+    activate();
+
+    mute.addEventListener('click', toggleSound);
+    document.body.addEventListener('keydown', keyPressed);
+    setup();
+
+});
+
+
+function setup() {
     let request = new Request("./json/data.json");
 
     return fetch(request)
@@ -68,7 +77,7 @@ function getData() {
 
         food = new Food(generateRandomCoordinate());
 
-        canvas.draw(food, snake);
+        canvas.draw(food, snake, direction);
         playGame();
         
     })
@@ -101,7 +110,7 @@ function playGame() {
         } else {
             snake.move(direction);
         }
-        canvas.draw(food, snake);
+        canvas.draw(food, snake, direction);
     }
 
     allowTurn = true
@@ -142,16 +151,15 @@ function checkColision() {
     //check off-grid value
     if(snake.head[0] < 0 || snake.head[0] >= rows|| snake.head[1] < 0 || snake.head[1] >= cols) {
         collided = true;
-    }
-    //check head with body or tails
-    for(const s of snake.body){
-        if(snake.head[0] == s[0] && snake.head[1] == s[1]) {
+    } else if(snake.head[0]==snake.tail[0] && snake.head[1] == snake.tail[1]) {
             collided = true;
+    } else {
+        //check head with body or tails
+        for(const s of snake.body){
+            if(snake.head[0] == s[0] && snake.head[1] == s[1]) {
+                collided = true;
+            }
         }
-    }
-
-    if(snake.head[0]==snake.tail[0] && snake.head[1] == snake.tail[1]) {
-        collided = true;
     }
 
     return collided
@@ -168,7 +176,7 @@ function addScore() {
 }
 
 function keyPressed(event) {
-    if(allowTurn){
+    if(allowTurn && gameState != GAME_OVER){
         switch(event.code){
             case "ArrowRight":
                 if((direction == UP || direction == DOWN) && gameState == PLAYING){
@@ -208,12 +216,47 @@ function keyPressed(event) {
 }
 
 // UTILITIES ////////////////////////////////
+function generateRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min) - min);
+}
 
 function generateRandomCoordinate(){
-    let x = Math.floor(Math.random() * rows);
-    let y = Math.floor(Math.random() * cols);
+    let x = generateRandomNumber(0, rows);
+    let y = generateRandomNumber(0, cols);
 
+    //quick scan
+    if(!verifyCoordinate([x,y])) {
+        let i = 0;
+        let j = 0;
+        while(i<rows) {
+            while(j<cols) {
+                if(verifyCoordinate([i,j])) {
+                    return [i,j];
+                }
+                i++;
+            }
+            j++;
+        }
+    }
     return [x,y];
+}
+
+function verifyCoordinate(coordinate) {
+    let x = coordinate[0];
+    let y = coordinate[1];
+    let verified = true;
+    if((snake.head.x === x && snake.head.y === y )) {
+        verified = false;
+    } else if((snake.tail.x === x && snake.tail.y == y)) {
+        verified = false;
+    } else {
+        for(const body of snake.body) {
+            if(body[0] === x && body[1] === y) {
+                verified = false;
+            }
+        }
+    }
+    return verified;
 }
 
 function isNewHighscore(){
