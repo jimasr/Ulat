@@ -46,11 +46,11 @@ const highScoreAudio = new Audio('./audio/highscore.mp3');
 
 
 play.addEventListener('click', ()=> {
-    activate();
-
     mute.addEventListener('click', toggleSound);
     document.body.addEventListener('keydown', keyPressed);
     setup();
+    activate();
+
 
 });
 
@@ -125,9 +125,9 @@ function playGame() {
         }
         setTimeout(() => {
             scoreboard.textContent = "0000";
-
+            canvas.clearCanvas();
             activate();
-        }, 2000);
+        }, 3000);
     } else { 
         setTimeout(playGame, 1000/speed);
     }

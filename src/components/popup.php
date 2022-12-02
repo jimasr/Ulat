@@ -5,6 +5,7 @@
     </div>
     <div class="modal-body">
         <button id="play"><?= PLAY ?></button>
+        <button id="mode"><?= GAME_MODE?></button>
         <button><?= HIGHSCORES ?></button>
     </div>
 </div>

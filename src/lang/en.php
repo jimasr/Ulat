@@ -9,3 +9,4 @@ const TITLE = "Ulat";
 
 const PLAY = "Play";
 const HIGHSCORES = "Highscores";
+const GAME_MODE = "Mode";
