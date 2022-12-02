@@ -1,7 +1,7 @@
 import { Snake } from './modules/Snake.js';
 import { Food } from './modules/Food.js';
 import { Canvas } from './modules/Canvas.js';
-import { activate } from './components/popup.js'
+import { toggleModal, toggleGameMode } from './components/popup.js'
 
 //enum game state
 const INIT = 1;
@@ -15,12 +15,11 @@ const RIGHT = [1, 0];
 const DOWN = [0, 1];
 const LEFT = [-1, 0];
 
-// COLOR ////////////////////
-
 const c_primary = 'hsl(73, 97%, 39%)';
 
-var rows;
+let rows;
 let cols;
+let walls;
 let direction;
 let gameState;
 let speed;
@@ -29,34 +28,34 @@ let food;
 let snake;
 let canvas;
 let score;
-let allowTurn = true;
+let allowTurn;
 
 const canvasFrame = document.querySelector('canvas.frame');
 const scoreboard = document.querySelector('#score');
 const mute = document.querySelector('.mute');
 const play = document.getElementById('play');
-
+const mode = document.getElementById('mode');
+const back = document.getElementById('return');
 /************ AUDIO *************/
 
 const eatingAudio = new Audio('./audio/move.mp3');
 const gameOverAudio = new Audio('./audio/gameover.mp3');
 const highScoreAudio = new Audio('./audio/highscore.mp3');
 
-
-
+mode.addEventListener('click', toggleGameMode);
+back.addEventListener('click', toggleGameMode);
+mute.addEventListener('click', toggleSound);
 
 play.addEventListener('click', ()=> {
-    mute.addEventListener('click', toggleSound);
     document.body.addEventListener('keydown', keyPressed);
     setup();
-    activate();
-
-
+    toggleModal();
 });
 
 
 function setup() {
-    let request = new Request("./json/data.json");
+    let jsonURL = "./json/" + getGameMode() + '.json'
+    let request = new Request(jsonURL);
 
     return fetch(request)
     .then(function(resp) {
@@ -65,19 +64,25 @@ function setup() {
     .then(function (data) {
         rows = data.dimensions[0];
         cols = data.dimensions[1];
+        speed = data.speed;
+        walls = data.walls;
 
         initGameState();
+
+
 
         canvas = new Canvas(canvasFrame);
         canvas.setSize(rows*cellSize, cols*cellSize);
         canvas.setColor(c_primary);
         canvas.setCellSize(cellSize);
+        canvas.setWalls(walls);
 
         snake = new Snake(data.snake);
 
         food = new Food(generateRandomCoordinate());
 
         canvas.draw(food, snake, direction);
+
         playGame();
         
     })
@@ -93,9 +98,9 @@ function initGameState() {
 
     gameState = INIT;
     direction = RIGHT;
+    allowTurn = true;
 
     score = 0;
-    speed = 5;
 
 }
 
@@ -126,7 +131,7 @@ function playGame() {
         setTimeout(() => {
             scoreboard.textContent = "0000";
             canvas.clearCanvas();
-            activate();
+            toggleModal();
         }, 3000);
     } else { 
         setTimeout(playGame, 1000/speed);
@@ -160,6 +165,12 @@ function checkColision() {
                 collided = true;
             }
         }
+
+        for(const wall of walls){
+            if(snake.head[0] == wall[0] && snake.head[1] == wall[1]) {
+                collided = true;
+            }
+        }
     }
 
     return collided
@@ -167,7 +178,7 @@ function checkColision() {
 }
 
 function addSpeed() {
-    speed += 0.3;
+    speed += 0.1;
 }
 
 function addScore() {
@@ -233,9 +244,9 @@ function generateRandomCoordinate(){
                 if(verifyCoordinate([i,j])) {
                     return [i,j];
                 }
-                i++;
+                j++;
             }
-            j++;
+            i++;
         }
     }
     return [x,y];
@@ -252,6 +263,12 @@ function verifyCoordinate(coordinate) {
     } else {
         for(const body of snake.body) {
             if(body[0] === x && body[1] === y) {
+                verified = false;
+            }
+        }
+
+        for(const wall of walls) {
+            if(wall[0] == x && wall[1] == y) {
                 verified = false;
             }
         }
@@ -290,4 +307,10 @@ function toggleSound(){
         gameOverAudio.muted = true;
         highScoreAudio.muted = true;
     }
+}
+
+function getGameMode() {
+    const selected = document.querySelector('.selected');
+
+    return selected.value;
 }

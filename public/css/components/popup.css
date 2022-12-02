@@ -2,10 +2,10 @@
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -40.5%);
+  transform: translate(-50%, -41%);
   width: 516px;
   height: 516px;
-  z-index: 10;
+  z-index: 5;
   background-color: var(--primary-1);
   border: solid #000 0.5em;
   display: flex;
@@ -18,14 +18,6 @@
   flex-direction: column;
   align-items: center;
   row-gap: 0.5em;
-}
-.modal .modal-body button {
-  cursor: pointer;
-  font-size: 36px;
-  background-color: inherit;
-}
-.modal .modal-body button:hover {
-  color: var(--primary-3);
 }
 .modal .modal-header {
   display: flex;
