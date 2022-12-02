@@ -19,6 +19,9 @@
   align-items: center;
   row-gap: 1em;
 }
+.mode .mode-body .selected {
+  color: var(--primary-3);
+}
 .mode.active {
   display: flex;
 }

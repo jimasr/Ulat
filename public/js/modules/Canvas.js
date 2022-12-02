@@ -64,8 +64,13 @@ class Canvas {
         this.cellSize = size;
     }
 
+    setWalls(walls) {
+        this.walls = walls;
+    }
+
     draw(food, snake, direction) {
         this.clearCanvas();
+        this.drawWall();
         this.drawFood(food);
         this.drawSnake(snake , direction);    
     }
@@ -136,6 +141,13 @@ class Canvas {
             this.cellSize, 
             this.cellSize
         ); 
+    }
+
+    drawWall() {
+        for(const wall of this.walls) {
+            this.ctx.fillStyle = "black";
+            this.ctx.fillRect(wall[0] * this.cellSize, wall[1] * this.cellSize, this.cellSize, this.cellSize);
+        }
     }
     
     clearCanvas() {

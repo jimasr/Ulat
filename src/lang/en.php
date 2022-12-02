@@ -5,7 +5,7 @@ const TITLE = "Ulat";
 /****** POPUP ******/
 
 const PLAY = "Play";
-const HIGHSCORES = "Highscores";
+const HIGHSCORES = "Highscore";
 const GAME_MODE = "Mode";
 
 /****** GAMEMODE ******/

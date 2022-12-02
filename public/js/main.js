@@ -15,12 +15,11 @@ const RIGHT = [1, 0];
 const DOWN = [0, 1];
 const LEFT = [-1, 0];
 
-// COLOR ////////////////////
-
 const c_primary = 'hsl(73, 97%, 39%)';
 
 let rows;
 let cols;
+let walls;
 let direction;
 let gameState;
 let speed;
@@ -55,7 +54,8 @@ play.addEventListener('click', ()=> {
 
 
 function setup() {
-    let request = new Request("./json/data.json");
+    let jsonURL = "./json/" + getGameMode() + '.json'
+    let request = new Request(jsonURL);
 
     return fetch(request)
     .then(function(resp) {
@@ -65,14 +65,17 @@ function setup() {
         rows = data.dimensions[0];
         cols = data.dimensions[1];
         speed = data.speed;
+        walls = data.walls;
 
         initGameState();
+
 
 
         canvas = new Canvas(canvasFrame);
         canvas.setSize(rows*cellSize, cols*cellSize);
         canvas.setColor(c_primary);
         canvas.setCellSize(cellSize);
+        canvas.setWalls(walls);
 
         snake = new Snake(data.snake);
 
@@ -162,6 +165,12 @@ function checkColision() {
                 collided = true;
             }
         }
+
+        for(const wall of walls){
+            if(snake.head[0] == wall[0] && snake.head[1] == wall[1]) {
+                collided = true;
+            }
+        }
     }
 
     return collided
@@ -169,7 +178,7 @@ function checkColision() {
 }
 
 function addSpeed() {
-    speed += 0.3;
+    speed += 0.1;
 }
 
 function addScore() {
@@ -257,6 +266,12 @@ function verifyCoordinate(coordinate) {
                 verified = false;
             }
         }
+
+        for(const wall of walls) {
+            if(wall[0] == x && wall[1] == y) {
+                verified = false;
+            }
+        }
     }
     return verified;
 }
@@ -292,4 +307,10 @@ function toggleSound(){
         gameOverAudio.muted = true;
         highScoreAudio.muted = true;
     }
+}
+
+function getGameMode() {
+    const selected = document.querySelector('.selected');
+
+    return selected.value;
 }

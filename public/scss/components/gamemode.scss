@@ -25,6 +25,10 @@
         align-items: center;
         
         row-gap: 1em;
+
+        .selected {
+            color: var(--primary-3);
+        }
     }
 
     &.active {
