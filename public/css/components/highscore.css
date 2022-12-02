@@ -1,0 +1,28 @@
+.highscore {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -41%);
+  width: 516px;
+  height: 516px;
+  z-index: 10;
+  background-color: var(--primary-1);
+  border: solid #000 0.5em;
+  display: none;
+  flex-direction: column;
+}
+.highscore .list-highscore {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.highscore .list-highscore .row {
+  display: flex;
+  column-gap: 1em;
+}
+.highscore.active {
+  display: flex;
+}
+
+/*# sourceMappingURL=highscore.css.map */
