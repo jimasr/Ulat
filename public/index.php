@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="<?= PATH_CSS . 'style.css'?>">
     <link rel="stylesheet" href="<?= PATH_CSS . 'components/popup.css'?>">
     <link rel="stylesheet" href="<?= PATH_CSS . 'components/gamemode.css'?>">
-
+    <link rel="stylesheet" href="<?= PATH_CSS . 'components/highscore.css'?>">
 
     <script type="module" src="<?= PATH_JS . 'main.js' ?>" defer></script>
     <script type="module" src="<?= PATH_JS . 'components/popup.js' ?>" defer></script>
@@ -49,7 +49,9 @@
                 </svg>
             </div>
         </div>
+
         <?php require_once(PATH_COMPONENTS . 'popup.php'); ?>
+        <?php require_once(PATH_COMPONENTS . 'highscore.php'); ?>
         <?php require_once(PATH_COMPONENTS . 'gamemode.php'); ?>
         <?php require_once(PATH_COMPONENTS . 'canvas.php'); ?>
     </main>
