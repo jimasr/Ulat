@@ -33,7 +33,8 @@ function displayHighscore() {
 function setHighscore(scores, score, name) {
 
     let i = 0;
-    while(scores[i] <= score && i < scores.length) {
+    let s = scores.score
+    while(scores[i] != null && scores[i] != 'undefined' && scores[i].score > score && i < scores.length) {
         i++;
     }
 

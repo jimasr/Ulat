@@ -4,8 +4,6 @@ import { Canvas } from './modules/Canvas.js';
 import { toggleModal, toggleGameMode, toggleHighscore, goBack } from './components/popup.js'
 import { displayHighscore, setHighscore, getHighscore } from './components/highscore.js'
 
-
-//enum game state
 const INIT = 1;
 const PLAYING = 2;
 const PAUSED = 3;
@@ -135,11 +133,6 @@ function playGame() {
         if(isNewHighscore(scores)){
             canvas.newHighscore();
             highScoreAudio.play();
-            
-            setTimeout(() => {
-                let name = prompt("New Highscore! Enter your name")
-                setHighscore(scores, score, name);   
-            }, 20);
         } else {
             gameOverAudio.play();
             canvas.gameOver();
@@ -310,6 +303,13 @@ function isNewHighscore(scores){
             };
         }
         if(s.score <= score){
+            setTimeout(() => {
+                let name = prompt("New Highscore! Enter your name")
+                if(name == "") {
+                    name = "Unknown";
+                }
+                setHighscore(scores, score, name);   
+            }, 50);
             return true;
         }
     
