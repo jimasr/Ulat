@@ -19,24 +19,25 @@
   align-items: center;
   row-gap: 0.5em;
 }
-.modal .modal-header {
+.modal.active {
+  display: flex;
+}
+
+.modal-header {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   padding: 60px;
 }
-.modal .modal-header h1, .modal .modal-header p {
+.modal-header h1, .modal-header p {
   font-family: Chalkduster, fantasy;
 }
-.modal .modal-header h1 {
+.modal-header h1 {
   font-size: 98px;
 }
-.modal .modal-header p {
+.modal-header p {
   font-size: 16px;
-}
-.modal.active {
-  display: flex;
 }
 
 /*# sourceMappingURL=popup.css.map */

@@ -6,7 +6,7 @@
     <div class="modal-body">
         <button id="play"><?= PLAY ?></button>
         <button id="mode"><?= GAME_MODE?></button>
-        <button><?= HIGHSCORES ?></button>
+        <button id="highscore"><?= HIGHSCORES ?></button>
     </div>
 </div>
 <script type="module" src="<?= PATH_JS . "components/popup.js" ?>"></script>

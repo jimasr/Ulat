@@ -25,27 +25,29 @@
         row-gap: .5em;
     }
 
-    .modal-header {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-
-        padding: 60px;
-        h1, p{
-            font-family: Chalkduster, fantasy;
-        }
-
-        h1{
-            font-size: 98px;
-        }
-
-        p{
-            font-size: 16px;
-        }
-    }
 
     &.active{
         display: flex;
     }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    padding: 60px;
+    h1, p{
+        font-family: Chalkduster, fantasy;
+    }
+
+    h1{
+        font-size: 98px;
+    }
+
+    p{
+        font-size: 16px;
+    }
+
 }

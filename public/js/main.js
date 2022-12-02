@@ -1,7 +1,9 @@
 import { Snake } from './modules/Snake.js';
 import { Food } from './modules/Food.js';
 import { Canvas } from './modules/Canvas.js';
-import { toggleModal, toggleGameMode } from './components/popup.js'
+import { toggleModal, toggleGameMode, toggleHighscore, goBack } from './components/popup.js'
+import { displayHighscore, setHighscore, getHighscore } from './components/highscore.js'
+
 
 //enum game state
 const INIT = 1;
@@ -36,6 +38,7 @@ const mute = document.querySelector('.mute');
 const play = document.getElementById('play');
 const mode = document.getElementById('mode');
 const back = document.getElementById('return');
+const highscore = document.getElementById('highscore');
 /************ AUDIO *************/
 
 const eatingAudio = new Audio('./audio/move.mp3');
@@ -43,8 +46,12 @@ const gameOverAudio = new Audio('./audio/gameover.mp3');
 const highScoreAudio = new Audio('./audio/highscore.mp3');
 
 mode.addEventListener('click', toggleGameMode);
-back.addEventListener('click', toggleGameMode);
+back.addEventListener('click', goBack);
 mute.addEventListener('click', toggleSound);
+highscore.addEventListener('click', ()=> {
+    toggleHighscore();
+    displayHighscore();
+});
 
 play.addEventListener('click', ()=> {
     document.body.addEventListener('keydown', keyPressed);
@@ -92,8 +99,6 @@ function setup() {
 
 }
 
-// SPECIFIC SETUP
-
 function initGameState() {
 
     gameState = INIT;
@@ -112,6 +117,11 @@ function playGame() {
         }
         if(checkFoodEaten()) {
             snake.growSnake(direction);
+
+            food = new Food(generateRandomCoordinate());
+            addScore();
+            addSpeed();
+            eatingAudio.play();
         } else {
             snake.move(direction);
         }
@@ -121,9 +131,15 @@ function playGame() {
     allowTurn = true
 
     if(gameState == GAME_OVER) {
-        if(isNewHighscore()){
-            highScoreAudio.play();
+        let scores = getHighscore();
+        if(isNewHighscore(scores)){
             canvas.newHighscore();
+            highScoreAudio.play();
+            
+            setTimeout(() => {
+                let name = prompt("New Highscore! Enter your name")
+                setHighscore(scores, score, name);   
+            }, 20);
         } else {
             gameOverAudio.play();
             canvas.gameOver();
@@ -140,12 +156,6 @@ function playGame() {
 
 function checkFoodEaten() {
     if(snake.head[0] + direction[0] == food.x && snake.head[1] + direction[1] == food.y){
-        food = new Food(generateRandomCoordinate());
-        addScore();
-        addSpeed();
-
-        eatingAudio.play();
-
         return true;
     }
     return false;
@@ -193,6 +203,10 @@ function keyPressed(event) {
                 if((direction == UP || direction == DOWN) && gameState == PLAYING){
                     direction = RIGHT;
                 }
+
+                if(gameState == INIT) {
+                    gameState = PLAYING;
+                }
     
                 break;
             
@@ -200,17 +214,29 @@ function keyPressed(event) {
                 if ((direction == UP || direction == DOWN) && gameState == PLAYING){
                     direction = LEFT;
                 }
+
+                if(gameState == INIT) {
+                    gameState = PLAYING;
+                }
                 break;
     
             case "ArrowUp":
                 if ((direction == LEFT || direction == RIGHT) && gameState == PLAYING){
                     direction = UP;
                 }
+
+                if(gameState == INIT) {
+                    gameState = PLAYING;
+                }
                 break;
     
             case "ArrowDown":
                 if((direction == LEFT || direction == RIGHT) && gameState == PLAYING){
                     direction = DOWN;
+                }
+
+                if(gameState == INIT) {
+                    gameState = PLAYING;
                 }
                 break;
             
@@ -226,7 +252,6 @@ function keyPressed(event) {
     }
 }
 
-// UTILITIES ////////////////////////////////
 function generateRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min) - min);
 }
@@ -276,17 +301,18 @@ function verifyCoordinate(coordinate) {
     return verified;
 }
 
-function isNewHighscore(){
-    const storage = window.localStorage;
-    let highest = storage.getItem("score");
-
-    if(highest == undefined){
-        highest = 0;
-    }
-
-    if(highest < score){
-        storage.setItem("score", score);
-        return true;
+function isNewHighscore(scores){
+    for(let s of scores) {
+        if(s == null || s == 'undefined') {
+            s = {
+                name:"Unknown",
+                score: 0
+            };
+        }
+        if(s.score <= score){
+            return true;
+        }
+    
     }
 
     return false;
