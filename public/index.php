@@ -8,6 +8,8 @@
     <title><?= TITLE ?></title>
     <link rel="stylesheet" href="<?= PATH_CSS . 'style.css'?>">
     <link rel="stylesheet" href="<?= PATH_CSS . 'components/popup.css'?>">
+    <link rel="stylesheet" href="<?= PATH_CSS . 'components/gamemode.css'?>">
+
 
     <script type="module" src="<?= PATH_JS . 'main.js' ?>" defer></script>
     <script type="module" src="<?= PATH_JS . 'components/popup.js' ?>" defer></script>
@@ -17,6 +19,25 @@
     <main class="no-scroll">
         <div class="score-board">
             <h1 id="score">0000</h1>
+
+            <div class="return">
+                <button id="return" class="hide">
+                    <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="32.000000pt" height="32.000000pt" viewBox="0 0 512.000000 512.000000"preserveAspectRatio="xMidYMid meet">
+                        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+                        fill="#000000" stroke="none">
+                        <path d="M1160 4458 c-50 -18 -90 -55 -421 -387 -418 -417 -414 -412 -414
+                        -551 0 -138 -3 -134 409 -547 316 -317 368 -365 421 -389 255 -117 540 164
+                        423 417 -15 32 -54 87 -93 128 l-68 72 969 -4 c966 -3 969 -3 1053 -25 412
+                        -110 692 -452 718 -878 28 -459 -271 -870 -718 -985 -78 -21 -116 -23 -529
+                        -28 -441 -6 -445 -6 -498 -30 -71 -32 -147 -115 -167 -183 -19 -66 -19 -150 0
+                        -216 20 -68 96 -151 167 -183 52 -24 57 -24 443 -27 423 -4 553 4 713 43 748
+                        181 1265 866 1229 1627 -32 661 -465 1234 -1093 1444 -58 20 -149 45 -202 57
+                        -94 20 -125 21 -1090 24 l-994 4 66 69 c89 94 108 135 114 236 4 73 1 88 -23
+                        143 -34 76 -113 152 -181 175 -66 22 -166 20 -234 -6z"/>
+                        </g>
+                    </svg>
+                </button>
+            </div>
 
             <div class="mute">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
@@ -29,6 +50,7 @@
             </div>
         </div>
         <?php require_once(PATH_COMPONENTS . 'popup.php'); ?>
+        <?php require_once(PATH_COMPONENTS . 'gamemode.php'); ?>
         <?php require_once(PATH_COMPONENTS . 'canvas.php'); ?>
     </main>
 </body>

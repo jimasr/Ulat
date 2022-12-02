@@ -1,7 +1,7 @@
 import { Snake } from './modules/Snake.js';
 import { Food } from './modules/Food.js';
 import { Canvas } from './modules/Canvas.js';
-import { activate } from './components/popup.js'
+import { toggleModal, toggleGameMode } from './components/popup.js'
 
 //enum game state
 const INIT = 1;
@@ -19,7 +19,7 @@ const LEFT = [-1, 0];
 
 const c_primary = 'hsl(73, 97%, 39%)';
 
-var rows;
+let rows;
 let cols;
 let direction;
 let gameState;
@@ -29,29 +29,28 @@ let food;
 let snake;
 let canvas;
 let score;
-let allowTurn = true;
+let allowTurn;
 
 const canvasFrame = document.querySelector('canvas.frame');
 const scoreboard = document.querySelector('#score');
 const mute = document.querySelector('.mute');
 const play = document.getElementById('play');
-
+const mode = document.getElementById('mode');
+const back = document.getElementById('return');
 /************ AUDIO *************/
 
 const eatingAudio = new Audio('./audio/move.mp3');
 const gameOverAudio = new Audio('./audio/gameover.mp3');
 const highScoreAudio = new Audio('./audio/highscore.mp3');
 
-
-
+mode.addEventListener('click', toggleGameMode);
+back.addEventListener('click', toggleGameMode);
+mute.addEventListener('click', toggleSound);
 
 play.addEventListener('click', ()=> {
-    mute.addEventListener('click', toggleSound);
     document.body.addEventListener('keydown', keyPressed);
     setup();
-    activate();
-
-
+    toggleModal();
 });
 
 
@@ -65,8 +64,10 @@ function setup() {
     .then(function (data) {
         rows = data.dimensions[0];
         cols = data.dimensions[1];
+        speed = data.speed;
 
         initGameState();
+
 
         canvas = new Canvas(canvasFrame);
         canvas.setSize(rows*cellSize, cols*cellSize);
@@ -78,6 +79,7 @@ function setup() {
         food = new Food(generateRandomCoordinate());
 
         canvas.draw(food, snake, direction);
+
         playGame();
         
     })
@@ -93,9 +95,9 @@ function initGameState() {
 
     gameState = INIT;
     direction = RIGHT;
+    allowTurn = true;
 
     score = 0;
-    speed = 5;
 
 }
 
@@ -126,7 +128,7 @@ function playGame() {
         setTimeout(() => {
             scoreboard.textContent = "0000";
             canvas.clearCanvas();
-            activate();
+            toggleModal();
         }, 3000);
     } else { 
         setTimeout(playGame, 1000/speed);
@@ -233,9 +235,9 @@ function generateRandomCoordinate(){
                 if(verifyCoordinate([i,j])) {
                     return [i,j];
                 }
-                i++;
+                j++;
             }
-            j++;
+            i++;
         }
     }
     return [x,y];

@@ -96,11 +96,7 @@ class Canvas {
                     direction = this.getDirection(snake.body[1], snake.body[j])
                     image = this.getBodyImage(direction);
                 }
-
-
-                console.log(image);
-                console.log(direction);
-
+ 
             } else {
                 direction = this.getDirection(snake.body[j], snake.body[i]);
                 image = this.getBodyImage(direction);
