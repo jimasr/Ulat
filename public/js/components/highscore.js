@@ -1,6 +1,8 @@
 const storage = window.localStorage;
 
-
+/**
+ * This function display highscore to the highscore panel
+ */
 function displayHighscore() {
     const list = document.querySelector('.list-highscore');
     const row = document.querySelector('.row');
@@ -30,6 +32,9 @@ function displayHighscore() {
 
 }
 
+/**
+ * This function set a new highscore in a descending order
+ */
 function setHighscore(scores, score, name) {
 
     let i = 0;
@@ -53,6 +58,10 @@ function setHighscore(scores, score, name) {
     storage.setItem("score", JSON.stringify(scores));
 }
 
+/**
+ * This function returns the highscore stored in the local storage
+ * @returns Array of object score if not null
+ */
 function getHighscore() {
     //score is an array with a size of 5
     if(storage.getItem("score") != 'undefined' && storage.getItem("score") != null) {
