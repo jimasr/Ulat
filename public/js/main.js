@@ -57,7 +57,10 @@ play.addEventListener('click', ()=> {
     toggleModal();
 });
 
-
+/**
+ * This function setup the game using fetch method to get data
+ * @returns {Promise} Promise object based on the result of fetch
+ */
 function setup() {
     let jsonURL = "./json/" + getGameMode() + '.json'
     let request = new Request(jsonURL);
@@ -97,6 +100,9 @@ function setup() {
 
 }
 
+/**
+ * This function initialise game variables before a game starts
+ */
 function initGameState() {
 
     gameState = INIT;
@@ -107,6 +113,9 @@ function initGameState() {
 
 }
 
+/**
+ * This function run game based on game state constant
+ */
 function playGame() {
 
     if(gameState == PLAYING) {
@@ -147,6 +156,10 @@ function playGame() {
     }
 }
 
+/**
+ * This function checks if the food has been eaten
+ * @returns {boolean} True if snake collided with food, false if not
+ */
 function checkFoodEaten() {
     if(snake.head[0] + direction[0] == food.x && snake.head[1] + direction[1] == food.y){
         return true;
@@ -154,6 +167,10 @@ function checkFoodEaten() {
     return false;
 }
 
+/**
+ * This function checks for collision between snake and obstacles
+ * @returns {boolean} True if snake collided with itself, walls or border, false if not
+ */
 function checkColision() {
     let collided = false;
     //check off-grid value
@@ -180,15 +197,25 @@ function checkColision() {
 
 }
 
+/**
+ * This function add speed
+ */
 function addSpeed() {
     speed += 0.1;
 }
 
+/**
+ * This function add score
+ */
 function addScore() {
     score++;
     scoreboard.textContent = ("0000" + score).slice(-4);
 }
 
+/**
+ * This function change movement based on key pressed
+ * @param {Event} event Event keypress
+ */
 function keyPressed(event) {
     if(allowTurn && gameState != GAME_OVER){
         switch(event.code){
@@ -245,10 +272,20 @@ function keyPressed(event) {
     }
 }
 
+/**
+ * This function generates a random number ranging from min to max
+ * @param {Number} min Minimum value
+ * @param {Number} max Maximum value
+ * @returns {Number} A random number
+ */
 function generateRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min) - min);
 }
 
+/**
+ * This function generate an array of coordinate using random number function
+ * @returns {Array} Array of coordinate
+ */
 function generateRandomCoordinate(){
     let x = generateRandomNumber(0, rows);
     let y = generateRandomNumber(0, cols);
@@ -270,6 +307,11 @@ function generateRandomCoordinate(){
     return [x,y];
 }
 
+/**
+ * This function verify if the coordinate superposed with snake and walls
+ * @param {Array} coordinate Array of x and y value
+ * @returns {Boolean} True if it does not superposed, false if not
+ */
 function verifyCoordinate(coordinate) {
     let x = coordinate[0];
     let y = coordinate[1];
@@ -294,6 +336,11 @@ function verifyCoordinate(coordinate) {
     return verified;
 }
 
+/**
+ * This function check if the new score is greater than any score from the local storage (highscore board)
+ * @param {Array} scores Array of scores from the local storge
+ * @returns {boolean} True if it's greater, false if not
+ */
 function isNewHighscore(scores){
     for(let s of scores) {
         if(s == null || s == 'undefined') {
@@ -318,6 +365,9 @@ function isNewHighscore(scores){
     return false;
 }
 
+/**
+ * This function toggle on and off sound
+ */
 function toggleSound(){
     const paths = mute.querySelectorAll('path');
     for(const path of paths){
@@ -335,6 +385,10 @@ function toggleSound(){
     }
 }
 
+/**
+ * This function retrieve game mode from mode panel
+ * @returns Value of selected game mode
+ */
 function getGameMode() {
     const selected = document.querySelector('.selected');
 
