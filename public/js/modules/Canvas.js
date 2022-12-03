@@ -1,5 +1,8 @@
 /***************** PATH *******************/
 
+import { Food } from "./Food";
+import { Snake } from "./Snake";
+
 const path = 'img/';
 const pathHead = path + 'head/';
 const pathBody = path + 'body/';
@@ -45,29 +48,57 @@ imgFood.src = pathFood + 'food' + extension;
 
 
 class Canvas {
+    /**
+     * Constructor Canvas
+     * @param {Element} canvas Canvas element
+     * @param {Number} cellSize Size of each cell
+     */
     constructor(canvas, cellSize) {
         this.canvas = canvas
         this.ctx = canvas.getContext('2d');
         this.cellSize = cellSize;
     }
 
+    /**
+     * This method sets canvas width and height
+     * @param {Number} width The width
+     * @param {Number} height The height
+     */
     setSize(width, height) {
         this.canvas.width = width;
         this.canvas.height = height;
     }
 
+    /**
+     * This method sets color of the canvas
+     * @param {String} color 
+     */
     setColor(color) {
         this.color = color;
     }
 
+    /**
+     * This method sets cell size of the canvas
+     * @param {Number} size Cell size
+     */
     setCellSize(size) {
         this.cellSize = size;
     }
 
+    /**
+     * This method sets walls
+     * @param {Array} walls An array of coordinates for walls
+     */
     setWalls(walls) {
         this.walls = walls;
     }
 
+    /**
+     * This method draws wall, food and snake
+     * @param {Food} food Food
+     * @param {Snake} snake Snake
+     * @param {Array} direction Direction for snake
+     */
     draw(food, snake, direction) {
         this.clearCanvas();
         this.drawWall();
@@ -75,6 +106,11 @@ class Canvas {
         this.drawSnake(snake , direction);    
     }
     
+    /**
+     * This method draws and animates snake
+     * @param {Snake} snake Snake
+     * @param {Array} direct Direction for snake
+     */
     drawSnake(snake, direct) {
         let direction = this.translateDirection(direct[0], direct[1]);
         let image = this.getHeadImage(direction);
@@ -132,6 +168,10 @@ class Canvas {
 
     }
     
+    /**
+     * This method draw food
+     * @param {Food} food Food
+     */
     drawFood(food) {
 
         this.ctx.drawImage(
@@ -143,6 +183,9 @@ class Canvas {
         ); 
     }
 
+    /**
+     * This method draw the wall
+     */
     drawWall() {
         for(const wall of this.walls) {
             this.ctx.fillStyle = "black";
@@ -150,11 +193,17 @@ class Canvas {
         }
     }
     
+    /**
+     * This method clear the canvas
+     */
     clearCanvas() {
         this.ctx.fillStyle = this.color;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
+    /**
+     * This method display the end of a game
+     */
     gameOver() {
         this.clearCanvas();
         this.ctx.font = "bold 80px Chalkduster, fantasy";
@@ -165,6 +214,9 @@ class Canvas {
 
     }
 
+    /**
+     * This method display if a new highscore is achieved
+     */
     newHighscore() {
         this.clearCanvas();
         this.ctx.font = "bold 80px Chalkduster, fantasy";
@@ -174,8 +226,12 @@ class Canvas {
         this.ctx.fillText("Highscore!", this.canvas.width/2, this.canvas.height/2 + 60);
     }
 
-    //reverse search of direction for snake parts
-    //c1 for before and c2 for after
+    /**
+     * This method reverse calculate the direction based on the body parts before
+     * @param {Array} c1 Coordinate body part before
+     * @param {Array} c2 Coordinate body part searched
+     * @returns {String} The direction
+     */
     getDirection(c1, c2) {
         let x1 = c1[0];
         let y1 = c1[1];
@@ -189,6 +245,12 @@ class Canvas {
         return this.translateDirection(deltaX, deltaY);
     }
 
+    /**
+     * This method converts the array of direction to String
+     * @param {Number} deltaX X value
+     * @param {Number} deltaY Y value
+     * @returns {String} The direction
+     */
     translateDirection(deltaX, deltaY) {
         let direction;
         if(deltaX == 1 && deltaY == 0) {
@@ -203,6 +265,11 @@ class Canvas {
         return direction;
     }
 
+    /**
+     * This method return the body image based on direction
+     * @param {Array} direction Body direction
+     * @returns {Image} The body part image
+     */
     getBodyImage(direction) {
         switch(direction) {
             case "up":
@@ -216,6 +283,11 @@ class Canvas {
         }       
     }
 
+    /**
+     * This method return the head image based on direction
+     * @param {Array} direction Head direction
+     * @returns {Image} The head part image
+     */
     getHeadImage(direction) {
         switch(direction) {
             case "up":
@@ -229,7 +301,11 @@ class Canvas {
         }    
     }
 
-
+    /**
+     * This method return the tail image based on direction
+     * @param {Array} direction Tail direction
+     * @returns {Image} The tail part image
+     */
     getTailImage(direction) {
         switch(direction) {
             case "up":
