@@ -30,6 +30,8 @@ let canvas;
 let score;
 let allowTurn;
 
+console.log("Hazim");
+
 const canvasFrame = document.querySelector('canvas.frame');
 const scoreboard = document.querySelector('#score');
 const mute = document.querySelector('.mute');

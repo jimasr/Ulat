@@ -1,4 +1,4 @@
-class Snake{
+class Snake {
     /**
      * Constructor Snake
      * @param {Array} coordinates Position of snake

@@ -1,7 +1,7 @@
 /***************** PATH *******************/
 
-import { Food } from "./Food";
-import { Snake } from "./Snake";
+import { Food } from "./Food.js";
+import { Snake } from "./Snake.js";
 
 const path = 'img/';
 const pathHead = path + 'head/';
