@@ -23,7 +23,6 @@ function displayHighscore() {
             score.textContent = s.score;
 
             cloneRow.removeAttribute('id');
-            console.log(cloneRow);
 
             list.append(cloneRow);
             i++;

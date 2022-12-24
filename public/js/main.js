@@ -40,9 +40,9 @@ const back = document.getElementById('return');
 const highscore = document.getElementById('highscore');
 /************ AUDIO *************/
 
-const eatingAudio = new Audio('./audio/move.mp3');
-const gameOverAudio = new Audio('./audio/gameover.mp3');
-const highScoreAudio = new Audio('./audio/highscore.mp3');
+const eatingAudio = new Audio('public/audio/move.mp3');
+const gameOverAudio = new Audio('public/audio/gameover.mp3');
+const highScoreAudio = new Audio('public/audio/highscore.mp3');
 
 mode.addEventListener('click', toggleGameMode);
 back.addEventListener('click', goBack);
@@ -63,7 +63,7 @@ play.addEventListener('click', ()=> {
  * @returns {Promise} Promise object based on the result of fetch
  */
 function setup() {
-    let jsonURL = "./json/" + getGameMode() + '.json'
+    let jsonURL = "public/json/" + getGameMode() + '.json'
     let request = new Request(jsonURL);
 
     return fetch(request)

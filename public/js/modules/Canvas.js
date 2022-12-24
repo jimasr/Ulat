@@ -3,7 +3,7 @@
 import { Food } from "./Food.js";
 import { Snake } from "./Snake.js";
 
-const path = 'img/';
+const path = 'public/img/';
 const pathHead = path + 'head/';
 const pathBody = path + 'body/';
 const pathTail = path + 'tail/';
