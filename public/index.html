@@ -1,18 +1,22 @@
-<?php require_once '../src/init.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= TITLE ?></title>
-    <link rel="stylesheet" href="<?= PATH_CSS . 'style.css'?>">
-    <link rel="stylesheet" href="<?= PATH_CSS . 'components/popup.css'?>">
-    <link rel="stylesheet" href="<?= PATH_CSS . 'components/gamemode.css'?>">
-    <link rel="stylesheet" href="<?= PATH_CSS . 'components/highscore.css'?>">
+    <title>Ulat</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components/popup.css">
+    <link rel="stylesheet" href="css/components/gamemode.css">
+    <link rel="stylesheet" href="css/components/highscore.css">
 
-    <script type="module" src="<?= PATH_JS . 'main.js' ?>" defer></script>
-    <script type="module" src="<?= PATH_JS . 'components/popup.js' ?>" defer></script>
+    <script type="module" src="js/main.js" defer></script>
+    <script type="module" src="js/components/popup.js" defer></script>
+    <script type="module" src="js/components/highscore.js" defer></script>
+    <script type="module" src="js/components/popup.js"></script>
+
+    <script src="js/components/gamemode.js" defer></script>
+
 
 </head>
 <body>
@@ -50,10 +54,50 @@
             </div>
         </div>
 
-        <?php require_once(PATH_COMPONENTS . 'popup.php'); ?>
-        <?php require_once(PATH_COMPONENTS . 'highscore.php'); ?>
-        <?php require_once(PATH_COMPONENTS . 'gamemode.php'); ?>
-        <?php require_once(PATH_COMPONENTS . 'canvas.php'); ?>
+        <div class="modal active">
+            <div class="modal-header">
+                <h1>Ulat</h1>
+                <p>A snake game</p>
+            </div>
+            <div class="modal-body">
+                <button id="play">Play</button>
+                <button id="mode">Mode</button>
+                <button id="highscore">Highscore</button>
+            </div>
+        </div>
+
+        <!-- highscore -->
+        <div class="highscore">
+            <div class="modal-header">
+                <h1>Ulat</h1>
+                <p>Highscore</p>
+            </div>
+
+            <div class="list-highscore">
+
+            </div>
+
+            <div class="row" id="hide">
+                <p class="number">1</p>
+                <p class="name">Hazim</p>
+                <p class="score">4000</p>
+            </div>
+        </div>
+
+        <!-- gamemode -->
+        <div class="mode">
+            <div class="mode-body">
+                <button value="easy" class="selected">Easy</button>
+                <button value="medium">Medium</button>
+                <button value="hard">Hard</button>
+            </div>
+        </div>
+
+        <!-- canvas -->
+        <canvas class="frame" width="500" height="500">
+            <div id="hide" class="grid">
+            </div>
+        </canvas>   
     </main>
 </body>
 </html>

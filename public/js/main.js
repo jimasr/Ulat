@@ -28,6 +28,7 @@ let food;
 let snake;
 let canvas;
 let score;
+let points;
 let allowTurn;
 
 const canvasFrame = document.querySelector('canvas.frame');
@@ -74,6 +75,8 @@ function setup() {
         cols = data.dimensions[1];
         speed = data.speed;
         walls = data.walls;
+        points = data.points;
+
 
         initGameState();
 
@@ -208,7 +211,7 @@ function addSpeed() {
  * This function add score
  */
 function addScore() {
-    score++;
+    score = score + points;
     scoreboard.textContent = ("0000" + score).slice(-4);
 }
 
